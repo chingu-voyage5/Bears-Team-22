@@ -160,6 +160,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         *  Added packages
+         */
+        Spatie\Permission\PermissionServiceProvider::class,
+
     ],
 
     /*
