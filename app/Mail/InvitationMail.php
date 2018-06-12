@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use App\Invite;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -29,13 +30,15 @@ class InvitationMail extends Mailable
      */
     public function build()
     {
-        $user = $this->invite->user();
+        $this->user = $this->invite->user;
 
-        if($user->has('roles')== 'trainer') {
-            return $this->from($user->email)->view('emails.invite-client');
+        if(User::find(1)->role->name == 'trainer') {
+            return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name, 
+                                                                                'token' => $this->invite->token ]);
         }
-        else if ($user->has('roles')== 'owner'){
-            return $this->from($user->email)->view('emails.invite-trainer');
+        else if (User::find(1)->role->name == 'owner'){
+            return $this->from($this->user->email)->view('emails.invite-trainer', ['name' => $this->user->name, 
+                                                                                'token' => $this->invite->token ]);
         }
 
     }
