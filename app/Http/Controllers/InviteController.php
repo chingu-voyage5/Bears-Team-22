@@ -102,25 +102,4 @@ class InviteController extends Controller
         //
     }
 
-
-    /**
-     * @param $token
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function accept($token)
-    {
-
-        if (!$invite = Invite::where('token', $token)->first()) {
-            abort(404);
-        }
-
-        // create the user with the details from the invite
-        $user = User::create(['email' => $invite->email]);
-
-        $invite->is_accepted = true;
-        $invite->save();
-
-        Auth::login($user);
-        return redirect('/');
-    }
 }
