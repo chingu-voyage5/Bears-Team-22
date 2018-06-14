@@ -1,6 +1,8 @@
 <html>
 <head>
     <title>@yield('title')</title>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 @section('sidebar')
