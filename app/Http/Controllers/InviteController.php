@@ -107,9 +107,14 @@ class InviteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $invite = Invite::find($request->id);
+        if (!$invite) {
+            return redirect()->route('invite.list')->with('failed', 'Unable to delete specified invite');
+        }
+        $invite->delete();
+        return redirect()->route('invite.list')->with('success', 'Invite successfully deleted');
     }
 
 }

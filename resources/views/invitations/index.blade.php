@@ -10,6 +10,17 @@
 @section('content')
 <a href="{{route('invite.create')}}">Invite a person</a>
 
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+@if (session('failed'))
+    <div class="alert alert-danger">
+        {{ session('failed') }}
+    </div>
+@endif
+
 @if(isset($invitations))
 <table class="table">
     <thead>
@@ -18,6 +29,7 @@
             <th>Invited email</th>
             <th>Accepted</th>
             <th>Date</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +39,7 @@
                     <td>{{ $invite->email }}</td>
                     <td>{{ ($invite->is_accepted == 1) ? "Yes" : "No" }}</td>
                     <td>{{ $invite->created_at->format('d M Y') }}</td>
+                    <td><a href="{{ route('invite.delete', ['id' => $invite->id] )}}" alt="Delete">X</a></td>
                 </tr>
             @endforeach
     </tbody>
