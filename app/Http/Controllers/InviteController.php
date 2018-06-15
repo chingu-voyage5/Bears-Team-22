@@ -12,14 +12,24 @@ use Illuminate\Support\Facades\Mail;
 class InviteController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $invitations= Invite::all();
-        return view('invitations.index')->with('invitations');
+        $invitations= Invite::with('user')->get();
+        return view('invitations.index', ['invitations' => $invitations]);
     }
 
     /**

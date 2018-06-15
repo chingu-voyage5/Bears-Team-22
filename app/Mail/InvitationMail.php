@@ -32,12 +32,12 @@ class InvitationMail extends Mailable
     {
         $this->user = $this->invite->user;
 
-        if(User::find(1)->role->name == 'trainer') {
-            return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name, 
+        if($this->user->role->name === 'trainer') {
+            return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name,
                                                                                 'token' => $this->invite->token ]);
         }
-        else if (User::find(1)->role->name == 'owner'){
-            return $this->from($this->user->email)->view('emails.invite-trainer', ['name' => $this->user->name, 
+        else if ($this->user->role->name === 'owner'){
+            return $this->from($this->user->email)->view('emails.invite-trainer', ['name' => $this->user->name,
                                                                                 'token' => $this->invite->token ]);
         }
 
