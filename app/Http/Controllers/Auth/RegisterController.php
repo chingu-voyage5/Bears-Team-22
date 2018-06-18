@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Invite;
+use App\Roles;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -63,6 +65,36 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        //@TODO: Refactor this, and split it up
+        if (isset($data['_ref'])) {
+            // we don't have valid token i db
+            if (!$invite = Invite::where('token', $data['_ref'])->first()) {
+                return User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                ]);
+            }
+
+            // check what role new user should have
+            if (User::where('id', $invite->user_id)->first()->role->name === "trainer") {
+                $role_id = Roles::where('name', 'client')->first()->id;
+            }
+            if (User::where('id', $invite->user_id)->first()->role->name === "owner") {
+                $role_id = Roles::where('name', 'trainer')->first()->id;
+            }
+            
+            $invite->is_accepted = true;
+            $invite->save();
+
+            return User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role_id' => $role_id,
+            ]);
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
