@@ -50,7 +50,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: #1e7e34;
                 padding: 0 25px;
                 font-size: 12px;
                 font-weight: 600;
@@ -65,11 +65,20 @@
         </style>
     </head>
     <body>
+
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
+
+                        <a href="{{ route('invite.list') }}">Invitations</a>
+
                         <a href="{{ url('/home') }}">Home</a>
+
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
+
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
@@ -79,15 +88,10 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    GYM Management App
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
         </div>
