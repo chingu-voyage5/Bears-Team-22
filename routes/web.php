@@ -22,3 +22,4 @@ Route::get('invite/{id}/delete', 'InviteController@destroy')->name('invite.delet
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('exercises', 'ExerciseController');
