@@ -16,8 +16,13 @@ class ExerciseController extends Controller
 
   public function create()
   {
-      return view('excercises.create');
+      return view('exercises.create');
   }
 
+  public function store(Request $request)
+  {
+    $exercises = Exercise::create($request->all());
+    return redirect(route('exercises.index'));
+  }
 
 }
