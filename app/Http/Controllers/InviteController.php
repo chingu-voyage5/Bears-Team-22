@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Invite;
 use App\Mail\InvitationMail;
+use App\Roles;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,12 @@ class InviteController extends Controller
      */
     public function create()
     {
-        return view('invitations.create');
+        $roles = [];
+        if(Auth::user()->role->name === 'owner')
+            $roles = Roles::whereIn('name',['trainer','client'])->get();
+
+
+        return view('invitations.create')->with('roles',$roles);
     }
 
     /**
@@ -59,6 +65,7 @@ class InviteController extends Controller
         $invite = Invite::create([
             'user_id'=> $currentUser->id,
             'email' => $request->get('email'),
+            'invited_role' => $request->get('invited_role'),
             'token' => $token
         ]);
 

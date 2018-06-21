@@ -8,7 +8,9 @@
 @endsection
 
 @section('content')
-<a href="{{route('invite.create')}}">Invite a person</a>
+
+<a class="btn btn-dark" aria-label="Left Align" href="{{route('invite.create')}}">
+    <i class="fas fa-envelope"></i>Invite a person</a>
 
 @if (session('success'))
     <div class="alert alert-success">

@@ -30,16 +30,13 @@ class InvitationMail extends Mailable
      */
     public function build()
     {
-        $this->user = $this->invite->user;
-
-        if($this->user->role->name === 'trainer') {
-            return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name,
-                                                                                'token' => $this->invite->token ]);
-        }
-        else if ($this->user->role->name === 'owner'){
+        if($this->invite->invited_role->name === 'trainer') {
             return $this->from($this->user->email)->view('emails.invite-trainer', ['name' => $this->user->name,
-                                                                                'token' => $this->invite->token ]);
+                'token' => $this->invite->token ]);
         }
-
+        else if ($this->invite->invited_role->name === 'client'){
+            return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name,
+                'token' => $this->invite->token ]);
+        }
     }
 }
