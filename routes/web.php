@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('invite', 'InviteController@index')->name('invite.list');
+Route::get('invite/new', 'InviteController@create')->name('invite.create');
+Route::post('invite', 'InviteController@store')->name('invite.store');
+Route::get('invite/{id}/delete', 'InviteController@destroy')->name('invite.delete');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

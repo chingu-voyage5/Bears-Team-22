@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        <input name="_ref" id="_ref" type="hidden">
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -74,4 +75,28 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+<script>
+    function addrCheck(ji) {
+
+        hu = window.location.search.substring(1);
+        gy = hu.split("&");
+
+        for (i = 0; i < gy.length; i++ )
+        {
+            ft = gy[i].split("=");
+            if (ft[0] == ji)
+            {
+                return ft[1];
+            }
+        }
+    }
+    var m = addrCheck("ref");
+    if (typeof m !== 'undefined' )
+    {
+       document.getElementById('_ref').value = m;
+    }
+</script>
+>>>>>>> development
 @endsection
