@@ -19,11 +19,9 @@ class CreateInvitesTable extends Migration
 
             $table->string('email');
             $table->string('token', 16)->unique();
-            $table->unsignedInteger('invited_role');
+            $table->unsignedInteger('invited_role')->nullable();
 
-            $table->boolean('is_accepted')->default(false);
             $table->timestamp('accepted_at')->nullable();
-
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

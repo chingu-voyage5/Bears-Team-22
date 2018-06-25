@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{ $invite->user->name }}</td>
                     <td>{{ $invite->email }}</td>
-                    <td>{{ ($invite->is_accepted == 1) ? "Yes" : "No" }}</td>
+                    <td>{{ ($invite->accepted_at != null) ? "Yes" : "No" }}</td>
                     <td>{{ $invite->created_at->format('d M Y') }}</td>
                     <td><a href="{{ route('invite.delete', ['id' => $invite->id] )}}" alt="Delete">X</a></td>
                 </tr>

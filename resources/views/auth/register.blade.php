@@ -8,6 +8,11 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
+                    @if (isset($message))
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                    @endif
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <input name="_ref" id="_ref" type="hidden">
@@ -30,7 +35,8 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ isset($email)? $email : old('email') }}" required
+                                {{ (isset($email)) ? "readonly" : "" }}>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback">
