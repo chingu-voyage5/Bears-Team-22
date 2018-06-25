@@ -7,6 +7,7 @@ use App\Invite;
 use App\Roles;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -43,6 +44,26 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegister(Request $request)
+    {
+        $email = null;
+        $invite = null;
+        $message = null;
+
+        if($request->get('ref')) {
+            $invite = Invite::where('token',$request->get('ref'))->first();
+            $email = isset($invite)? $invite->email : null;
+
+            if ($invite && $invite->accepted_at) {
+                $email = null;
+                $message = "Registration token has expired";
+            }
+        }
+
+        return view('auth.register')->with('email',$email)->with('message', $message);
+
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -66,11 +87,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
         //@TODO: Refactor this, and split it up
         if (isset($data['_ref'])) {
             // we don't have valid token i db
-            if (!$invite = Invite::where('token', $data['_ref'])->where('is_accepted', false)->first()) {
+            if (!$invite = Invite::where('token', $data['_ref'])->where('accepted_at', null)->first()) {
                 return User::create([
                     'name' => $data['name'],
                     'email' => $data['email'],
@@ -86,14 +106,13 @@ class RegisterController extends Controller
                 $role_id = Roles::where('name', 'trainer')->first()->id;
             }
 
-            $invite->is_accepted = true;
             $invite->accepted_at = Carbon::now();
 
             $invite->save();
 
             return User::create([
                 'name' => $data['name'],
-                'email' => $data['email'],
+                'email' => $invite->email,
                 'password' => Hash::make($data['password']),
                 'role_id' => $role_id,
             ]);

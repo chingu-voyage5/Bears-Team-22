@@ -2,12 +2,14 @@
 
 namespace App\Mail;
 
+use App\Roles;
 use App\User;
 use App\Invite;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Spatie\Permission\Models\Role;
 
 class InvitationMail extends Mailable
 {
@@ -30,11 +32,17 @@ class InvitationMail extends Mailable
      */
     public function build()
     {
-        if($this->invite->invited_role->name === 'trainer') {
+        $this->user = $this->invite->user;
+
+        $invited_role= Role::where('id',$this->invite->invited_role)->first();
+        $roles = Roles::where('name','trainer')->get();
+
+
+        if ($invited_role->name === 'trainer'){
             return $this->from($this->user->email)->view('emails.invite-trainer', ['name' => $this->user->name,
-                'token' => $this->invite->token ]);
+                                                                                'token' => $this->invite->token ]);
         }
-        else if ($this->invite->invited_role->name === 'client'){
+        else if ($invited_role->name === 'client'){
             return $this->from($this->user->email)->view('emails.invite-client', ['name' => $this->user->name,
                 'token' => $this->invite->token ]);
         }

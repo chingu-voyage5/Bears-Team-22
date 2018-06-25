@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Invite extends Model
 {
     protected $fillable = [
-        'email', 'token','is_accepted','user_id'
+        'email', 'token','invited_role','user_id'
     ];
 
+    protected $dates = [
+        'accepted_at',
+    ];
 
     public function user()
     {
