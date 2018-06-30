@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Invite;
 use App\Mail\InvitationMail;
 use App\Roles;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;

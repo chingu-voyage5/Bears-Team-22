@@ -23,4 +23,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('weightlog', 'WeightLogController@index')->name('weightlog.index');
-Route::post('weightlog', 'WeightLogController@create')->name('weightlog.addlog');
+Route::post('weightlog', 'WeightLogController@store')->name('weightlog.addlog');

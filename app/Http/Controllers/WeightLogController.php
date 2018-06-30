@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use App\WeightLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class WeightLogController extends Controller
 {
+
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,9 @@ class WeightLogController extends Controller
      */
     public function index()
     {
-        return view('weightlog.index');
+        $logs = WeightLog::where('user_id', Auth::id())->orderBy('id', 'desc')->take(10)->get();
+        //dd($logs);
+        return view('weightlog.index', ['logs' => $logs]);
     }
 
     /**
@@ -35,7 +47,21 @@ class WeightLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'weight' => 'numeric:required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('weightlog.index')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $log = WeightLog::create([
+            'user_id' => Auth::id(),
+            'weight' => $request->weight * 100, // we don't want to store float in db !
+        ]);
+
+        return redirect()->route('weightlog.index')->with('success', 'Log recorded: '. $request->weight .'kg');
     }
 
     /**
