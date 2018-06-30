@@ -14,7 +14,7 @@ class WeightLogController extends Controller
      */
     public function index()
     {
-        //
+        return view('weightlog.index');
     }
 
     /**

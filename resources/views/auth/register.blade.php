@@ -75,8 +75,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
 <script>
     function addrCheck(ji) {
 
@@ -98,5 +96,4 @@
        document.getElementById('_ref').value = m;
     }
 </script>
->>>>>>> development
 @endsection
