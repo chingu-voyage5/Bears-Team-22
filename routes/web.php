@@ -22,5 +22,6 @@ Route::get('invite/{id}/delete', 'InviteController@destroy')->name('invite.delet
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('weightlog', 'WeightLogController@index')->name('weightlog.index');
-Route::post('weightlog', 'WeightLogController@store')->name('weightlog.addlog');
+Route::get('weightlog/{id?}', 'WeightLogController@index')->name('weightlog.index');
+Route::post('weightlog/{id?}', 'WeightLogController@store')->name('weightlog.addlog');
+Route::get('weightlog/{id}/delete', 'WeightLogController@destroy')->name('weightlog.deleteLog');

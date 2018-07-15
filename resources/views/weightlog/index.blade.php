@@ -12,8 +12,27 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -40,18 +59,20 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Weight</th>
+                                <th></th>
                             </tr>
                             </thead>
-                            <tbod>
+                            <tbody>
                                 @if ($logs)
                                     @foreach ($logs as $log)
                                         <tr>
                                             <td>{{ $log->created_at->format('d.m.Y') }}</td>
                                             <td>{{ $log->weight / 100 }} Kg</td>
+                                            <td><a href="{{ route('weightlog.deleteLog', ['id' => $log->id]) }}" style="color: red;"><span class="oi oi-x"></span></a></td>
                                         </tr>
                                     @endforeach
                                 @endif
-                            </tbod>
+                            </tbody>
                         </table>
                     </div>
                 </div>
