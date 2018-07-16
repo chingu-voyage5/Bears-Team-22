@@ -44,7 +44,11 @@
             <div class="col-md-12">
                 <div class="card mb-3">
                     <div class="card-header">Weight Graph</div>
-                    <div class="card-body"></div>
+                    <div class="card-body">
+
+                        <canvas id="weightChart"></canvas>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,11 +68,17 @@
                             </thead>
                             <tbody>
                                 @if ($logs)
+                                    @php
+                                    $id;
+                                    @endphp
                                     @foreach ($logs as $log)
                                         <tr>
-                                            <td>{{ $log->created_at->format('d.m.Y') }}</td>
+                                            <td>{{ $log->created_at->format('d.m.Y.') }}</td>
                                             <td>{{ $log->weight / 100 }} Kg</td>
-                                            <td><a href="{{ route('weightlog.deleteLog', ['id' => $log->id]) }}" style="color: red;"><span class="oi oi-x"></span></a></td>
+                                            <td><a href="{{ route('weightlog.deleteLog', ['id' => $log->id]) }}" style="color: #ae0d0b;"><span class="far fa-trash-alt"></span></a></td>
+                                            @php
+                                            $id = $log->user_id
+                                            @endphp
                                         </tr>
                                     @endforeach
                                 @endif
@@ -126,20 +136,66 @@
 
         <div class="row">
 
-            <script>
-                $('#sandbox-container .input-group.date').datepicker({
-                    startDate: 0,
-                    maxViewMode: 2,
-                    todayBtn: "linked",
-                    calendarWeeks: true,
-                    autoclose: true,
-                    todayHighlight: true,
-                    weekStart: 1,
-                    endDate: "0d",
-                    format: "dd.mm.yyyy",
-                    orientation: "top auto"
-                });
-            </script>
         </div>
+        <script>
+            $('#sandbox-container .input-group.date').datepicker({
+                startDate: 0,
+                maxViewMode: 2,
+                todayBtn: "linked",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true,
+                weekStart: 1,
+                endDate: "0d",
+                format: "dd.mm.yyyy.",
+                orientation: "top auto"
+            });
+
+            @if (isset($id))
+            $.ajax({
+                url: '{{ route('weightlog.ajax', ['id' => $id]) }}',
+            }).done(function(data) {
+                var dataset = JSON.parse(data);
+                var ctx = document.getElementById('weightChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: dataset.labels.reverse(),
+                        datasets: [{
+                            label: "Weight",
+                            data: dataset.data.map(x => (x / 100)).reverse()
+                        }]
+                    },
+                    options: {
+                        tooltips: {
+                            mode: 'nearest',
+                            intersect: false
+                        },
+                        legend: {
+                            display: false,
+                            labels: {
+                                fontColor: 'rgb(255, 99, 132)'
+                            },
+                            position: 'left',
+
+                        },
+                        title: {
+                            display: false
+                        },
+                        elements: {
+                            line: {
+                                tension: 0
+                            }
+                        },
+                        layout: {
+                            padding: 50
+                        }
+
+                    }
+                });
+
+            });
+            @endif
+        </script>
     </div>
 @endsection

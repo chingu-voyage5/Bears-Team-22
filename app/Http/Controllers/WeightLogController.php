@@ -134,4 +134,39 @@ class WeightLogController extends Controller
         }
         return redirect()->route('weightlog.index')->with('error', 'You don\'t have permission to do that!');
     }
+
+    public function ajax($id)
+    {
+        $data = WeightLog::select('weight')->where('user_id', $id)->orderBy('created_at', 'desc')->take(10)->get();
+        $labels = WeightLog::select('created_at')->where('user_id', $id)->orderBy('created_at', 'desc')->take(10)->get();
+//dd($this->ajaxValues($labels));
+        return json_encode([
+            'labels' => $this->carbonDate($this->ajaxCollectionValues($labels)),
+            'data' => $this->ajaxCollectionValues($data)
+        ]);
+    }
+
+    // extract values from collection for ajax call
+    private function ajaxCollectionValues($collection)
+    {
+        $dataset = [];
+        foreach($collection->toArray() as $arr) {
+            foreach($arr as $key => $val) {
+                $dataset[] = $val;
+            }
+        }
+        return $dataset;
+    }
+
+    // return date in friendly readable format - dd.mm.yyyy.
+    private function carbonDate(array $array)
+    {
+        $result = [];
+        foreach($array as $key) {
+
+            $result[] = Carbon::parse($key)->format('d.m.Y');
+        }
+        return $result;
+    }
+
 }

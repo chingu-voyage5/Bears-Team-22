@@ -25,3 +25,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('weightlog/{id?}', 'WeightLogController@index')->name('weightlog.index');
 Route::post('weightlog/{id?}', 'WeightLogController@store')->name('weightlog.addlog');
 Route::get('weightlog/{id}/delete', 'WeightLogController@destroy')->name('weightlog.deleteLog');
+Route::get('weightlog/{id}/ajax', 'WeightLogController@ajax')->name('weightlog.ajax');
