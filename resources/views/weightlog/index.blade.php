@@ -82,7 +82,7 @@
                 <div class="card mb-3">
                     <div class="card-header">New Entry</div>
                     <div class="card-body">
-                        <form action="{{ route('weightlog.addlog') }}" class="form-inline" method="POST">
+                        <form action="{{ route('weightlog.addlog') }}" class="form" method="POST">
                             @csrf
                             <div class="col-md-6">
 
@@ -102,6 +102,17 @@
                                         </div>
                                         @endif
                                     </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div id="sandbox-container">
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="date" name="date" placeholder="Date"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><span class="far fa-calendar-alt"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -114,6 +125,21 @@
         </div>
 
         <div class="row">
+
+            <script>
+                $('#sandbox-container .input-group.date').datepicker({
+                    startDate: 0,
+                    maxViewMode: 2,
+                    todayBtn: "linked",
+                    calendarWeeks: true,
+                    autoclose: true,
+                    todayHighlight: true,
+                    weekStart: 1,
+                    endDate: "0d",
+                    format: "dd.mm.yyyy",
+                    orientation: "top auto"
+                });
+            </script>
         </div>
     </div>
 @endsection
