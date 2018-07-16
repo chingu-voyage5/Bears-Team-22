@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InviteRequest;
 use App\Invite;
 use App\Mail\InvitationMail;
 use App\Roles;
@@ -43,7 +44,6 @@ class InviteController extends Controller
         if(Auth::user()->role->name === 'owner')
             $roles = Roles::whereIn('name',['trainer','client'])->get();
 
-
         return view('invitations.create')->with('roles',$roles);
     }
 
@@ -53,7 +53,7 @@ class InviteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InviteRequest $request)
     {
         $currentUser = Auth::user();
         do {
@@ -64,9 +64,11 @@ class InviteController extends Controller
         $invite = Invite::create([
             'user_id'=> $currentUser->id,
             'email' => $request->get('email'),
-            'invited_role' => $request->get('invited_role'),
+            'invited_role' => ($currentUser->role->name === 'trainer') ? Roles::where('name','client')->first()->id
+                                                    : $request->get('invited_role'),
             'token' => $token
         ]);
+
 
         Mail::to($request->get('email'))->send(new InvitationMail($invite));
 
@@ -102,7 +104,7 @@ class InviteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InviteRequest $request, $id)
     {
         //
     }
