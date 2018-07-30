@@ -20,6 +20,8 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "npm": "^6.1.0"
+        "bootstrap-datepicker": "^1.8.0",
+        "npm": "^6.1.0",
+        "open-iconic": "^1.1.1"
     }
 }
