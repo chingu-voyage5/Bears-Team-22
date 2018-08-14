@@ -75,7 +75,7 @@ class WeightLogController extends Controller
             'weight' => $request->weight * 100, // we don't want to save float in to the database
         ];
         if (isset($request->date)) {
-            $q['created_at'] = Carbon::createFromFormat('d.m.Y', $request->date)->toDateTimeString();
+            $q['created_at'] = Carbon::createFromFormat('d.m.Y.', $request->date)->toDateTimeString();
             $q['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
